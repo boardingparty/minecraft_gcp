@@ -1,0 +1,35 @@
+#!/bin/bash
+set -euxo pipefail
+
+# One bucket per project.
+export TF_VAR_tf_state_bucket="${GOOGLE_CLOUD_PROJECT}-boardingparty"
+# The git origin is the source of truth (trim scheme with cut, and drop illegal characters for gcp bucket names)
+export TF_VAR_application="$(git remote get-url origin | cut -f3 -d '/' | tr -dc [a-z0-9./_-])"
+# The the truth is branchy
+export TF_VAR_environment="$(git rev-parse --abbrev-ref HEAD | tr -dc [a-z./])"
+export TF_VAR_project="${GOOGLE_CLOUD_PROJECT}"
+export TF_VAR_region="${GOOGLE_CLOUD_REGION}"
+
+# Create bucket if not exists
+gsutil ls -b "gs://${TF_VAR_tf_state_bucket}" || gsutil mb -p "${GOOGLE_CLOUD_PROJECT}" -l "${TF_VAR_region}" "gs://${TF_VAR_tf_state_bucket}"
+
+# Terraform init
+docker run --env TF_VAR_tf_state_bucket \
+           --env TF_VAR_application \
+           --env TF_VAR_environment \
+           --env TF_VAR_project \
+           --env TF_VAR_region \
+           -v "$(pwd)/../../terraform:/workpace" -w /workpace \
+           -it hashicorp/terraform:light init \
+           -backend-config "bucket=$TF_VAR_tf_state_bucket" \
+           -backend-config "prefix=$TF_VAR_application/$TF_VAR_environment"
+           
+# Terraform apply --auto-approve
+docker run --env TF_VAR_tf_state_bucket \
+           --env TF_VAR_application \
+           --env TF_VAR_environment \
+           --env TF_VAR_project \
+           --env TF_VAR_region \
+           -v "$(pwd)/../../terraform:/workpace" -w /workpace \
+           -it hashicorp/terraform:light apply --auto-approve
+            
