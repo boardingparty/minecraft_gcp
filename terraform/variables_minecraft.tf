@@ -1,5 +1,6 @@
 variable "zone" {
   type = string
+  default = ""
 }
 
 variable "enable_switch_access_group" {
