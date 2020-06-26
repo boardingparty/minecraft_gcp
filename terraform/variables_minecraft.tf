@@ -1,6 +1,5 @@
 variable "zone" {
   type     = string
-  required = true
 }
 
 variable "startup_script" {
