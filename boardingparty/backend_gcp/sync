@@ -17,24 +17,14 @@ export TF_VAR_zone="europe-west1-c"
 gsutil ls -b "gs://${TF_VAR_tf_state_bucket}" || gsutil mb -p "${GOOGLE_CLOUD_PROJECT}" -l "${TF_VAR_region}" "gs://${TF_VAR_tf_state_bucket}"
 
 # Terraform init
-docker run --env TF_VAR_tf_state_bucket \
-           --env TF_VAR_application \
-           --env TF_VAR_environment \
-           --env TF_VAR_project \
-           --env TF_VAR_region \
-           --env TF_VAR_zone \
+docker run --env-file <(env | grep TF_VAR) \
            -v "$(pwd)/../../terraform:/workpace" -w /workpace \
            -t hashicorp/terraform:light init \
            -backend-config "bucket=$TF_VAR_tf_state_bucket" \
            -backend-config "prefix=$TF_VAR_application/$TF_VAR_environment"
            
 # Terraform apply --auto-approve
-docker run --env TF_VAR_tf_state_bucket \
-           --env TF_VAR_application \
-           --env TF_VAR_environment \
-           --env TF_VAR_project \
-           --env TF_VAR_region \
-           --env TF_VAR_zone \
+docker run --env-file <(env | grep TF_VAR) \
            -v "$(pwd)/../../terraform:/workpace" -w /workpace \
            -t hashicorp/terraform:light apply --auto-approve
             
