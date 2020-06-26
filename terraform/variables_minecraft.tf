@@ -16,5 +16,3 @@ variable "minecraft_switch_access_group" {
   type    = string
   default = ""
 }
-
-
