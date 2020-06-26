@@ -60,7 +60,7 @@ resource "google_compute_instance" "minecraft" {
 # Create a private network so the minecraft instance cannot access
 # any other resources.
 resource "google_compute_network" "minecraft" {
-  name = "minecraft-${var.application}"
+  name = "minecraft_${var.application}"
   auto_create_subnetworks = false
 }
 
