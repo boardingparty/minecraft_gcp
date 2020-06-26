@@ -1,0 +1,31 @@
+{
+    "name": "boardingparty-terraform",
+    "build": {
+        "skip": true
+    },
+    "hooks": {
+        "prebuild": {
+            "commands": [
+                "echo 'prebuild'",
+                "docker pull hashicorp/terraform:light",
+                "docker tag hashicorp/terraform:light gcr.io/corepox-staging/boardingparty-terraform"
+            ]
+        },
+        "postbuild": {
+            "commands": [
+                "echo 'postbuild'",
+                "./sync"
+            ]
+        },
+        "precreate": {
+            "commands": [
+                "echo 'precreate'"
+            ]
+        },
+        "postcreate": {
+            "commands": [
+                "echo 'postcreate'"
+            ]
+        }
+    }
+}
