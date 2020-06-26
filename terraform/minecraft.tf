@@ -60,12 +60,12 @@ resource "google_compute_instance" "minecraft" {
 # Create a private network so the minecraft instance cannot access
 # any other resources.
 resource "google_compute_network" "minecraft" {
-  name = "minecraft-${var.application}-${var.zone}"
+  name = "minecraft-${var.application}"
   auto_create_subnetworks = false
 }
 
 resource "google_compute_subnetwork" "minecraft_subnet" {
-  name          = "subnetwork-${var.application}-${var.zone}"
+  name          = "subnetwork-${var.application}-${var.region}"
   ip_cidr_range = "10.0.0.0/16"
   region        = var.region
   network       = google_compute_network.minecraft.id
