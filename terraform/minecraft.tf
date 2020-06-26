@@ -40,7 +40,7 @@ resource "google_compute_instance" "minecraft" {
   }
 
   network_interface {
-    network = google_compute_network.minecraft.name
+    subnetwork = google_compute_subnetwork.region_subnet.name
     access_config {
       nat_ip = google_compute_address.minecraft.address
     }
@@ -64,7 +64,7 @@ resource "google_compute_network" "minecraft" {
   auto_create_subnetworks = false
 }
 
-resource "google_compute_subnetwork" "minecraft_subnet" {
+resource "google_compute_subnetwork" "region_subnet" {
   name          = "subnetwork-${var.application}-${var.region}"
   ip_cidr_range = "10.0.0.0/16"
   region        = var.region
@@ -74,7 +74,7 @@ resource "google_compute_subnetwork" "minecraft_subnet" {
 # Open the firewall for Minecraft traffic
 resource "google_compute_firewall" "minecraft" {
   name    = "minecraft"
-  network = google_compute_network.minecraft.name
+  network = google_compute_subnetwork.minecraft.name
   # Minecraft client port
   allow {
     protocol = "tcp"
