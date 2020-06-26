@@ -3,7 +3,7 @@ set -euxo pipefail
 
 # One bucket per project.
 export TF_VAR_tf_state_bucket="${GOOGLE_CLOUD_PROJECT}-boardingparty"
-# The git origin is the source of truth (trim scheme with cut, and drop illegal characters for gcp bucket names)
+# The git origin URI is the source of truth (trim scheme off using cut, and drop illegal characters for gcp bucket names)
 export TF_VAR_application="$(git remote get-url origin | cut -f3 -d '/' | tr -dc [a-z0-9./_-])"
 # The the truth is branchy
 export TF_VAR_environment="$(git rev-parse --abbrev-ref HEAD | tr -dc [a-z./])"
@@ -19,6 +19,7 @@ docker run --env TF_VAR_tf_state_bucket \
            --env TF_VAR_environment \
            --env TF_VAR_project \
            --env TF_VAR_region \
+           --env TF_VAR_zone \
            -v "$(pwd)/../../terraform:/workpace" -w /workpace \
            -t hashicorp/terraform:light init \
            -backend-config "bucket=$TF_VAR_tf_state_bucket" \
@@ -30,6 +31,7 @@ docker run --env TF_VAR_tf_state_bucket \
            --env TF_VAR_environment \
            --env TF_VAR_project \
            --env TF_VAR_region \
+           --env TF_VAR_zone \
            -v "$(pwd)/../../terraform:/workpace" -w /workpace \
            -t hashicorp/terraform:light apply --auto-approve
             

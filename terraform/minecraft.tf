@@ -6,7 +6,7 @@ resource "google_service_account" "minecraft" {
 
 # Permenant Minecraft disk, stays around when VM is off
 resource "google_compute_disk" "minecraft" {
-  name  = "minecraft"
+  name  = "minecraft-${var.application}-${var.zone}"
   type  = "pd-standard"
   zone  = var.zone
   image = "cos-cloud/cos-stable"
@@ -14,13 +14,13 @@ resource "google_compute_disk" "minecraft" {
 
 # Permenant IP address, stays around when VM is off
 resource "google_compute_address" "minecraft" {
-  name   = "minecraft-ip"
+  name   = "minecraft-ip-${var.application}-${var.zone}"
   region = var.region
 }
 
 # VM to run Minecraft, we use preemptable which will shutdown within 24 hours
 resource "google_compute_instance" "minecraft" {
-  name         = "minecraft"
+  name         = "minecraft-${var.application}-${var.zone}"
   machine_type = "n1-standard-1"
   zone         = var.zone
   tags         = ["minecraft"]
@@ -32,7 +32,7 @@ resource "google_compute_instance" "minecraft" {
   #  docker exec -i mc rcon-cli
   # Once in rcon-cli you can "op <player_id>" to make someone an operator (admin)
   # Use 'sudo journalctl -u google-startup-scripts.service' to retrieve the startup script output
-  metadata_startup_script = "docker run -d -p 25565:25565 -e EULA=TRUE -v /var/minecraft:/data --name mc -e TYPE=FORGE -e MEMORY=2G --rm=true itzg/minecraft-server:latest;"
+  metadata_startup_script = var.startup_script
 
   boot_disk {
     auto_delete = false # Keep disk after shutdown (game data)

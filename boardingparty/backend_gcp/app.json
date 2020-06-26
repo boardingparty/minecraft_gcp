@@ -1,5 +1,11 @@
 {
     "name": "boardingparty-terraform",
+    "env": {
+        "zone": {
+            "description": "Zone for disk and VM, e.g. europe-west1-c. Full list here https://console.cloud.google.com/compute/zones",
+            "required": true
+        }
+    },
     "build": {
         "skip": true
     },
