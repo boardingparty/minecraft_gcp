@@ -19,6 +19,8 @@
         },
         "postbuild": {
             "commands": [
+                "echo 'printenv'",
+                "printenv",
                 "echo 'postbuild'",
                 "./sync"
             ]
