@@ -2,5 +2,9 @@
 set -euxo pipefail
 
 # Cloud Run Button insists on pushing, so we get a light one from Github and push that
-docker pull crccheck/hello-world
-docker tag crccheck/hello-world gcr.io/${GOOGLE_CLOUD_PROJECT}/${K_SERVICE}
+
+# Better option but only listens to port 8000 see https://github.com/GoogleCloudPlatform/cloud-run-button/issues/185
+# docker pull crccheck/hello-world
+# docker tag crccheck/hello-world gcr.io/${GOOGLE_CLOUD_PROJECT}/${K_SERVICE}
+docker pull pierrezemb/gostatic
+docker tag pierrezemb/gostatic gcr.io/${GOOGLE_CLOUD_PROJECT}/${K_SERVICE}
