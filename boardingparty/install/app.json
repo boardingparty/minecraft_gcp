@@ -2,7 +2,8 @@
     "name": "boardingparty",
     "env": {
         "HTTP_SERVER_PORT": {
-            "value": 8080
+            "description": "Sets the port of pierrezemb/gostatic to be compatable with Cloud Run",
+            "value": "8080"
         }
     },
     "build": {
