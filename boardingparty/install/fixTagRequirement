@@ -6,5 +6,5 @@ set -euxo pipefail
 # Better option but only listens to port 8000 see https://github.com/GoogleCloudPlatform/cloud-run-button/issues/185
 # docker pull crccheck/hello-world
 # docker tag crccheck/hello-world gcr.io/${GOOGLE_CLOUD_PROJECT}/${K_SERVICE}
-docker pull pierrezemb/gostatic
-docker tag pierrezemb/gostatic gcr.io/${GOOGLE_CLOUD_PROJECT}/${K_SERVICE}
+docker pull gcr.io/cloudrun/hello
+docker tag gcr.io/cloudrun/hello gcr.io/${GOOGLE_CLOUD_PROJECT}/${K_SERVICE}
