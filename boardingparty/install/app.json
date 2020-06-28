@@ -12,8 +12,7 @@
         "prebuild": {
             "commands": [
                 "echo 'prebuild'",
-                "docker pull hashicorp/terraform:light",
-                "docker tag hashicorp/terraform:light gcr.io/corepox-staging/boardingparty-terraform"
+                "./fixTagRequirement"
             ]
         },
         "postbuild": {
