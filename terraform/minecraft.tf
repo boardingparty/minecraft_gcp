@@ -14,7 +14,7 @@ resource "google_compute_disk" "minecraft" {
 
 # Permenant IP address, stays around when VM is off
 resource "google_compute_address" "minecraft" {
-  name   = "${substr("minecraft-ip-${var.application}-${var.zone}", 0, 64)}"
+  name   = "${substr("${var.application}-${var.zone}", 0, 64)}"
   region = var.region
 }
 
