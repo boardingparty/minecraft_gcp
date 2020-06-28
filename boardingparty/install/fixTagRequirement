@@ -1,0 +1,6 @@
+#!/bin/bash
+set -euxo pipefail
+
+# Cloud Run Button insists on pushing, so we get a light one from Github and push that
+docker pull crccheck/hello-world
+docker tag crccheck/hello-world gcr.io/${GOOGLE_CLOUD_PROJECT}/${K_SERVICE}
