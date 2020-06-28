@@ -6,7 +6,7 @@ resource "google_service_account" "minecraft" {
 
 # Permenant Minecraft disk, stays around when VM is off
 resource "google_compute_disk" "minecraft" {
-  name  = "minecraft-${var.application}-${var.zone}"
+  name  = "mc-${var.application}-${var.zone}"
   type  = "pd-standard"
   zone  = var.zone
   image = "cos-cloud/cos-stable"
@@ -14,13 +14,13 @@ resource "google_compute_disk" "minecraft" {
 
 # Permenant IP address, stays around when VM is off
 resource "google_compute_address" "minecraft" {
-  name   = "${substr("${var.application}-${var.zone}", 0, 64)}"
+  name   = "mc-${substr("${var.application}-${var.zone}", 0, 64)}"
   region = var.region
 }
 
 # VM to run Minecraft, we use preemptable which will shutdown within 24 hours
 resource "google_compute_instance" "minecraft" {
-  name         = "minecraft-${var.application}-${var.zone}"
+  name         = "mc-${var.application}-${var.zone}"
   machine_type = "n1-standard-1"
   zone         = var.zone
   tags         = ["minecraft"]
