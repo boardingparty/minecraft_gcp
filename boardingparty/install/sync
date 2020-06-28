@@ -4,7 +4,7 @@ set -euxo pipefail
 # One bucket per project.
 export TF_VAR_tf_state_bucket="${GOOGLE_CLOUD_PROJECT}-boardingparty"
 # The git origin URI is the source of truth (trim scheme off using cut, and drop illegal characters for gcp bucket names)
-export TF_VAR_application="$(git remote get-url origin | cut -f3- -d '/' | tr -dc [a-z0-9.-])"
+export TF_VAR_application="$(git remote get-url origin | cut -f3- -d '/' | tr -dc [-a-z0-9])"
 # The the truth is branchy
 export TF_VAR_environment="$(git rev-parse --abbrev-ref HEAD | tr -dc [a-z./])"
 export TF_VAR_project="${GOOGLE_CLOUD_PROJECT}"
