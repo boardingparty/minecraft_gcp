@@ -3,6 +3,14 @@ resource "google_project_service" "compute" {
   service = "compute.googleapis.com"
 }
 
+oogle_project_service.compute: Creating...
+google_project_iam_custom_role.instanceLister: Creating...
+google_compute_address.minecraft: Creating...
+google_compute_network.minecraft: Creating...
+google_project_iam_custom_role.minecraftSwitcher: Creating...
+google_compute_disk.minecraft: Creating...
+google_service_account.minecraft: Creating...
+
 # Create service account to run service with no permissions
 resource "google_service_account" "minecraft" {
   account_id   = "minecraft"
@@ -15,12 +23,14 @@ resource "google_compute_disk" "minecraft" {
   type  = "pd-standard"
   zone  = var.zone
   image = "cos-cloud/cos-stable"
+  depends_on = [google_project_service.compute]
 }
 
 # Permenant IP address, stays around when VM is off
 resource "google_compute_address" "minecraft" {
   name   = "mc-${substr("${var.application}-${var.zone}", 0, 64)}"
   region = var.region
+  depends_on = [google_project_service.compute]
 }
 
 # VM to run Minecraft, we use preemptable which will shutdown within 24 hours
@@ -67,6 +77,7 @@ resource "google_compute_instance" "minecraft" {
 resource "google_compute_network" "minecraft" {
   name = "minecraft${var.application}"
   auto_create_subnetworks = false
+  depends_on = [google_project_service.compute]
 }
 
 resource "google_compute_subnetwork" "minecraft" {
