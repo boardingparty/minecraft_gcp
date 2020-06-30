@@ -1,3 +1,8 @@
+# Turn on Compute API to provision VMs
+resource "google_project_service" "compute" {
+  service = "compute.googleapis.com"
+}
+
 # Create service account to run service with no permissions
 resource "google_service_account" "minecraft" {
   account_id   = "minecraft"
