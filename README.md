@@ -1,4 +1,4 @@
-# GCP Hosted Minecraft Server
+# GCP Hosted Multiplayer Minecraft Server
 
 A low cost Minecraft server, optimized for easy setup and occasional use, for you to share with friends and family.
 
