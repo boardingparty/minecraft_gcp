@@ -85,8 +85,8 @@ resource "google_compute_firewall" "minecraft" {
   network = google_compute_network.minecraft.name
   # Minecraft client port
   allow {
-    protocol = "tcp"
-    ports    = ["25565"]
+    protocol = "udp"
+    ports    = ["19132"]
   }
   # ICMP (ping)
   allow {
